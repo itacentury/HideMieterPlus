@@ -1,0 +1,19 @@
+{
+  "manifest_version": 2,
+  "name": "HideMieterPlus",
+  "version": "1.0",
+
+  "description": "Hides all exclusive MieterPlus subscription cards.",
+
+  "icons": {
+    "48": "icons/hmp-48.png",
+    "96": "icons/hmp-96.png"
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.immobilienscout24.de/Suche/*"],
+      "js": ["hide_mieter_plus.js"]
+    }
+  ]
+}
