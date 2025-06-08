@@ -13,7 +13,7 @@
   "content_scripts": [
     {
       "matches": ["*://*.immobilienscout24.de/Suche/*"],
-      "js": ["hide_mieter_plus.js"]
+      "js": ["HideMieterPlus.js"]
     }
   ]
 }
