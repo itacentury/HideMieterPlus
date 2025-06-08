@@ -89,19 +89,37 @@ class CardManager {
   }
 
   /**
-   * Determines the currently relevant cards based on the active tab mode
-   * @returns {HTMLCollection} Collection of card elements
+   * Determines all relevant card elements that should be considered for filtering
+   * This includes both content cards and sponsored/touchpoint cards
+   * @returns {Array} Array of all card elements to be processed
    */
   getCards() {
     const listModeTab = this.findTabByMode("List");
-
     const isListModeActive = listModeTab && listModeTab.isSelected;
 
+    let contentCards;
     if (isListModeActive) {
-      return document.getElementsByClassName("result-list__listing");
+      contentCards = document.getElementsByClassName("result-list__listing");
     } else {
-      return document.getElementsByClassName("listing-card");
+      contentCards = document.getElementsByClassName("listing-card");
     }
+
+    // Always include touchpoint cards regardless of the current mode
+    // These are sponsored content that should be filtered out
+    const touchpointCards = document.getElementsByClassName("touchpoint-card");
+
+    // Convert HTMLCollections to arrays and combine them
+    const allContentCards = Array.from(contentCards);
+    const allTouchpointCards = Array.from(touchpointCards);
+
+    // Combine both types of cards into a single array
+    const allCards = [...allContentCards, ...allTouchpointCards];
+
+    console.log(
+      `Found ${allContentCards.length} content cards and ${allTouchpointCards.length} touchpoint cards`
+    );
+
+    return allCards;
   }
 
   /**
