@@ -156,18 +156,15 @@ class CardManager {
   }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  console.log("DOM is fully loaded, initializing CardManager");
-  const cardManager = new CardManager();
+const cardManager = new CardManager();
 
-  // Event listener für Tab-Clicks
-  document.addEventListener("click", (event) => {
-    const clickedElement = event.target;
+// Event listener für Tab-Clicks
+document.addEventListener("click", (event) => {
+  const clickedElement = event.target;
 
-    if (clickedElement.matches('[data-testid^="mapToggle"]')) {
-      setTimeout(() => {
-        cardManager.reapplyFilters();
-      }, 100);
-    }
-  });
+  if (clickedElement.matches('[data-testid^="mapToggle"]')) {
+    setTimeout(() => {
+      cardManager.reapplyFilters();
+    }, 100);
+  }
 });
