@@ -15,7 +15,7 @@ class CardManager {
    */
   init() {
     try {
-      this.hidePaywallCards();
+      this.hideCards();
     } catch (error) {
       console.error("Error initializing CardManager:", error);
     }
@@ -28,7 +28,6 @@ class CardManager {
    * @returns {boolean} True if a child with the class was found
    */
   hasChildWithClass(parentElement, className) {
-    // Defensive programming: Check if the element exists
     if (!parentElement || typeof className !== "string") {
       return false;
     }
@@ -64,7 +63,6 @@ class CardManager {
 
         return {
           element: tab,
-          // Improved regex for clean mode extraction
           mode: testId.replace(/^mapToggle/, "").replace(/Mode$/, ""),
           isSelected: tab.getAttribute("aria-selected") === "true",
         };
@@ -107,10 +105,10 @@ class CardManager {
   }
 
   /**
-   * Hides all cards that contain paywall content
+   * Hides all cards that contain paywall or sponsored content
    * This is the main function that orchestrates the entire filtering logic
    */
-  hidePaywallCards() {
+  hideCards() {
     const cards = this.getCards();
 
     if (!cards || cards.length === 0) {
@@ -120,22 +118,24 @@ class CardManager {
 
     let hiddenCount = 0;
 
-    // Iterate over all cards and hide paywall cards
+    // Iterate over all cards and hide paywall and sponsored cards
     for (const card of cards) {
-      const hasPaywallContent =
+      const hasPaywallClass =
         this.hasChildWithClass(card, "paywall-label") ||
         this.hasChildWithClass(card, "plusBooking");
 
-      if (hasPaywallContent) {
+      const hasSponsoredClass = card.classList.contains("touchpoint-card");
+
+      if (hasPaywallClass || hasSponsoredClass) {
         card.style.display = "none";
         hiddenCount++;
 
-        card.classList.add("hidden-paywall-card");
+        card.classList.add("hidden-card");
       }
     }
 
     console.log(
-      `${hiddenCount} paywall cards hidden out of ${cards.length} total cards`
+      `${hiddenCount} cards hidden out of ${cards.length} total cards`
     );
   }
 
@@ -152,20 +152,22 @@ class CardManager {
    */
   reapplyFilters() {
     this.refreshTabsCache();
-    this.hidePaywallCards();
+    this.hideCards();
   }
 }
 
-const cardManager = new CardManager();
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM is fully loaded, initializing CardManager");
+  const cardManager = new CardManager();
 
-document.addEventListener("click", (event) => {
-  const clickedElement = event.target;
+  // Event listener für Tab-Clicks
+  document.addEventListener("click", (event) => {
+    const clickedElement = event.target;
 
-  // Check if a tab was clicked
-  if (clickedElement.matches('[data-testid^="mapToggle"]')) {
-    // Small delay to allow DOM to update
-    setTimeout(() => {
-      cardManager.reapplyFilters();
-    }, 100);
-  }
+    if (clickedElement.matches('[data-testid^="mapToggle"]')) {
+      setTimeout(() => {
+        cardManager.reapplyFilters();
+      }, 100);
+    }
+  });
 });
