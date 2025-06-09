@@ -19,7 +19,7 @@ jobs:
           # Extension directory
           EXTENSION_DIR="."
           # Package name based on the tag
-          PACKAGE_NAME="my-extension-${{ steps.tag.outputs.tag }}.zip"
+          PACKAGE_NAME="HideMieterPlus-${{ steps.tag.outputs.tag }}.zip"
           # Create ZIP with exclusions
           zip -r -FS "$PACKAGE_NAME" . \
             --exclude "*.git*" \
