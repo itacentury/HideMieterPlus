@@ -176,13 +176,24 @@ class CardManager {
 
 const cardManager = new CardManager();
 
-// Event listener für Tab-Clicks
 document.addEventListener("click", (event) => {
   const clickedElement = event.target;
 
   if (clickedElement.matches('[data-testid^="mapToggle"]')) {
     setTimeout(() => {
       cardManager.reapplyFilters();
-    }, 100);
+    }, 500);
   }
 });
+
+document
+  .querySelector('nav[aria-label="pagination"]')
+  .addEventListener("click", function (event) {
+    const button = event.target.closest("button");
+
+    if (!button) return;
+
+    setTimeout(() => {
+      cardManager.reapplyFilters();
+    }, 500);
+  });
