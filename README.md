@@ -9,13 +9,14 @@ This extension identifies and hides unwanted content cards on ImmoScout24 search
 - **MieterPlus exclusive listings** (cards with `paywall-label` or `plusBooking` classes)
 - **Sponsored content** (cards with `touchpoint-card` class)
 
-The filter works across different view modes (List, Hybrid View, Classic Map) and automatically reapplies when users switch between these modes.
+The filter works across different view modes (List, Hybrid View, Classic Map) and automatically reapplies when users switch between these modes or navigate through search result pages.
 
 ## Features
 
 - **Smart Card Detection**: Automatically identifies content cards based on the current view mode
 - **Multi-Type Filtering**: Hides both MieterPlus exclusive and sponsored content
 - **View Mode Awareness**: Adapts to List mode vs. Map mode card structures
+- **Pagination Support**: Automatically reapplies filters when navigating through search result pages
 - **Performance Optimized**: Uses caching to avoid repeated DOM queries
 - **Auto-Refresh**: Reapplies filters when view modes change
 - **Error Handling**: Includes comprehensive error handling and logging
@@ -61,7 +62,9 @@ _Comming soon_
    - Elements with class `plusBooking`
    - Parent elements with class `touchpoint-card`
 
-4. **Dynamic Updates**: Listens for tab clicks and reapplies filters automatically
+4. **Dynamic Updates**: Listens for tab clicks and pagination navigation, automatically reapplying filters when:
+   - Users switch between view modes
+   - Users navigate to different pages of search results
 
 ## Supported Pages
 
@@ -82,7 +85,7 @@ The extension works on all ImmoScout24 search pages:
 ### Performance Considerations
 
 - **Caching**: Tab data is cached to avoid repeated DOM queries
-- **Event Debouncing**: Uses 100ms timeout for tab click events
+- **Event Debouncing**: Uses 500ms timeout for tab click events and for pagination
 - **Efficient Selectors**: Uses class-based selection for optimal performance
 - **Minimal Impact**: Only loads on ImmoScout24 search pages
 
@@ -94,11 +97,12 @@ The extension works on all ImmoScout24 search pages:
 | Content Cards (Map)  | `listing-card`                 | Main content in map view    |
 | Paywall Indicators   | `paywall-label`, `plusBooking` | Identifies paid content     |
 | Sponsored Content    | `touchpoint-card`              | Sponsored/promoted listings |
+| Pagination Controls  | `nav[aria-label="pagination"]` | Navigation between pages    |
 
 ## Troubleshooting
 
 - **Extension not working**: Make sure you're on an ImmoScout24 search page (`/Suche/` URL)
-- **Cards still visible**: Try refreshing the page or switching between view modes
+- **Cards still visible**: Try refreshing the page, switching between view modes, or navigating to a different page
 - **Performance issues**: Check browser console for any error messages
 
 ## Privacy
@@ -112,6 +116,6 @@ This extension:
 
 ## License
 
-This project is licensed under the GNU General Public License v3.0 - see the `LICENSE` file for details.
+This project is licensed under the GNU General Public License v3.0. See the `LICENSE` file for details.
 
 Not affiliated with ImmoScout24.
